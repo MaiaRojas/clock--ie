@@ -44,7 +44,7 @@ const WatchList = ({ attempts, format, classes }) => (
     }
   >
     {attempts.map((attempt, idx) => (
-      <ListItem style={{ padding: 0, borderTop: '1px #fff solid' }}>
+      <ListItem key={attempt} style={{ padding: 0, borderTop: '1px #fff solid' }}>
         <ListItemText
           classes={{
             root: classes.root,

@@ -106,13 +106,16 @@ class Clock extends React.Component {
             )}
           </section>
           <section style={{ display: 'flex', justifyContent: 'space-between', margin: '16px 0' }}>
-            <Chip
+            <Link to={`/`}>
+              <Chip
                 icon={<DeleteIcon />}
                 label="Reset all"
-                clickable
+                // clickable
+                onClick={() => localStorage.removeItem('attempts')}
                 color="primary"
                 variant="outlined"
               />
+            </Link>
             <Link to={`/history`}>
               <Chip
                 icon={<TimelineIcon />}
