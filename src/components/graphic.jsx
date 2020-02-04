@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import moment from 'moment';
+// import moment from 'moment';
 import CanvasJSReact from '../assets/canvasjs.react';
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class SplineChart extends Component {
 	render() {
 		const { data } = this.props;
-		// console.log('data', moment(this.props.data[0].date).format('MMMM Do YYYY, h:mm:ss a'))
 		const dataPointsx = data.map(({ time, date }) => ({ x: new Date(date), y: time }))
 		console.log(dataPointsx)
 
@@ -32,12 +31,10 @@ class SplineChart extends Component {
 		}
 
 		return (
-		<div>
-			<h1>React Spline Chart</h1>
+		<div style={{ minWidth: 400 }}>
+			<h2 style={{ color: '#fff' }}>Attempts Chart</h2>
 			<CanvasJSChart options = {options}
-				/* onRef={ref => this.chart = ref} */
 			/>
-			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
 		</div>
 		);
 	}

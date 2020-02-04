@@ -1,71 +1,51 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import Paper from '@material-ui/core/Paper';
-import Fab from '@material-ui/core/Fab';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import List from '@material-ui/core/List';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Chip from '@material-ui/core/Chip';
-
-import TimelineIcon from '@material-ui/icons/Timeline';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Fab from '@material-ui/core/Fab';
 import { Typography } from '@material-ui/core';
+import TimelineIcon from '@material-ui/icons/Timeline';
 
-import WatchList from '../components/watch-list';
 import Stopwatch from '../components/time';
 import sortByTime from '../utils/sort';
+import WatchList from '../components/watch-list';
 
 
 const styles = theme => ({
-  bebe: {
-    fontSize: 32,
-  },
   root: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: '100vh',
-    backgroundColor: '#333',
+    backgroundColor: '#000',
     textAlign: 'center',
     flexDirection: 'column',
-  },
-  paper: {
-    margin: theme.spacing(4),
-    padding: `${theme.spacing(3)}px ${theme.spacing(4)}px ${theme.spacing(4)}px`,
-    width: '100%',
-    maxWidth: theme.leftDrawerWidth,
-  },
-  contentLogo: {
-    width: '100%',
-    maxWidth: theme.leftDrawerWidth,
-  },
-  logo: {
-    width: '100%',
-    display: 'block',
-    margin: `0 auto ${theme.spacing(1)}px`,
   },
 });
 
 const StopwatchControls = ({ onToggle, running}) =>
   <Fab onClick={onToggle}>
-    {running ? 'STOP' : 'START'}
+    {running ? 'Stop' : 'Start'}
   </Fab>
 
 const bestTime = (attempts) => {
   if (attempts.length === 0){
     return '00:00:00';
   }
-  return Stopwatch(attempts.sort(sortByTime)[0])
+  const best = attempts.sort(sortByTime)[0];
+  return Stopwatch({ ...best, format: 'home' })
 }
 
-const AverageTime = (attempts) => {
+const averageTime = (attempts) => {
   if (attempts.length === 0){
     return '00:00:00';
   }
   const average = attempts.reduce((acc, current) => acc + current.time, 0) / attempts.length;
-  return Stopwatch({ time: average });
+  return Stopwatch({ time: average, format: 'home' });
 }
 
 
@@ -113,21 +93,26 @@ class Clock extends React.Component {
     return (
       <div className={classes.root}>
         <div className="stopwatch">
-          <Stopwatch time={this.state.time} done='time' />
-          <StopwatchControls onToggle={this.toggle} running={this.state.running} />
-          <Paper>
-            <List
-              component="nav"
-              subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                  Intento de Vueltas
-                </ListSubheader>
-              }
-            >
-              {WatchList(attempts)}
-            </List>
-          </Paper>
-          <Paper>
+          <h1 style={{ color: '#fff' }}>Stopwatch</h1>
+          <section>
+            <div style={{ color: '#fff'}}>
+              <Stopwatch time={this.state.time} format='time' />
+            </div>
+            <StopwatchControls onToggle={this.toggle} running={this.state.running} />
+          </section>
+          <section>
+            {attempts.length > 0 && (
+              <WatchList attempts={attempts} format='home' />
+            )}
+          </section>
+          <section style={{ display: 'flex', justifyContent: 'space-between', margin: '16px 0' }}>
+            <Chip
+                icon={<DeleteIcon />}
+                label="Reset all"
+                clickable
+                color="primary"
+                variant="outlined"
+              />
             <Link to={`/history`}>
               <Chip
                 icon={<TimelineIcon />}
@@ -137,38 +122,40 @@ class Clock extends React.Component {
                 variant="outlined"
               />
             </Link>
-            <>
-              <Card>
-                <CardContent className={classes.content}>
-                  <Typography component="h5" variant="h5">
-                    Best Time
-                  </Typography>
-                  <Typography variant="subtitle1" color="textSecondary">
-                    {bestTime(attempts)}
-                  </Typography>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className={classes.content}>
-                  <Typography component="h5">
-                    Average Time
-                  </Typography>
-                  <Typography variant="subtitle1" color="textSecondary">
-                    {AverageTime(attempts)}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </>
-          </Paper>
+          </section>
+          <section style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Card style={{ background: '#333' }}>
+              <CardContent className={classes.content}>
+                <Typography component="h5">
+                  Best Time
+                </Typography>
+                <Typography variant="subtitle1" color="primary">
+                  {bestTime(attempts)}
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card style={{ background: '#333' }}>
+              <CardContent className={classes.content}>
+                <Typography component="h5">
+                  Average Time
+                </Typography>
+                <Typography variant="subtitle1" color="primary">
+                  {averageTime(attempts)}
+                </Typography>
+              </CardContent>
+            </Card>
+          </section>
         </div>
       </div>
     );
   }
 }
 
-// Clock.propTypes = {
-
-// };
+Clock.propTypes = {
+  classes: PropTypes.shape({
+    root: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 
 export default withStyles(styles)(Clock);

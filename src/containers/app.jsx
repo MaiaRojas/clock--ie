@@ -5,7 +5,6 @@ import Clock from './clock';
 import History from './history';
 
 class App extends Component {
-
   render() {
     return (
       <Router>
@@ -25,14 +24,5 @@ class App extends Component {
     );
   }
 }
-
-// App.propTypes = {
-
-// };
-
-
-// App.defaultProps = {
-
-// };
 
 export default (App);
