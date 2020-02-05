@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
@@ -8,11 +9,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Time from './time';
 
 const styles = theme => ({
-  text: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
   root: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -31,33 +27,48 @@ const styles = theme => ({
   },
   subHeader: {
     color: '#fff',
-    fontWeight: 700,
+    fontWeight: 500,
+    margin: 0,
+  },
+  list: {
+    borderTop: '1px #97E7DB solid',
   }
 });
 
-const WatchList = ({ attempts, format, classes }) => (
-  <List
-    subheader={
-      <ListSubheader component="h2" className={classes.subHeader} >
-        ATTEMPTS
-      </ListSubheader>
-    }
-  >
-    {attempts.map((attempt, idx) => (
-      <ListItem key={attempt} style={{ padding: 0, borderTop: '1px #fff solid' }}>
-        <ListItemText
-          classes={{
-            root: classes.root,
-            primary: classes.primary,
-            secondary: classes.secondary,
-          }}
-          primary={`Round ${attempts.length - idx}`}
-          secondary={Time({ ...attempt, format})}
-        />
-      </ListItem>
-    ))}
-  </List>
-)
+const WatchList = ({ attempts, format, classes }) => {
+  const filteredList= (format === 'home' && attempts.length > 3) ? attempts.slice(attempts.length - 3) : attempts;
+  return (
+    <List
+      subheader={
+        <ListSubheader className={classes.subHeader} >
+          Attempts
+        </ListSubheader>
+      }
+    >
+      {filteredList.map((attempt, idx) => (
+        <ListItem key={`key-${idx}`} className={classes.list}>
+          <ListItemText
+            classes={{
+              root: classes.root,
+              primary: classes.primary,
+              secondary: classes.secondary,
+            }}
+            primary={`Round ${attempts.length - idx}`}
+            secondary={Time({ ...attempt, format})}
+          />
+        </ListItem>
+      ))}
+    </List>
+  )
+}
 
+WatchList.propTypes = {
+  classes: PropTypes.shape({
+    root: PropTypes.string.isRequired,
+    primary: PropTypes.string.isRequired,
+    secundary: PropTypes.string.isRequired,
+    subHeader: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default withStyles(styles)(WatchList);

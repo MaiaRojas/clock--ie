@@ -1,23 +1,20 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
-import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 
 import Graphic from '../components/graphic';
 import WatchList from '../components/watch-list';
+import Grid from '@material-ui/core/Grid';
 
-const styles = theme => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    backgroundColor: '#000',
-    textAlign: 'center',
-    flexDirection: 'column',
-  },
+const styles = () => ({
+  chip: {
+    backgroundColor: '#97E7DB',
+    '&:hover': {
+      backgroundColor: '#97E7DB !important',
+    },
+  }
 });
 
 
@@ -31,34 +28,33 @@ class History extends React.Component {
     const { classes } = this.props;
     const attempts = JSON.parse(localStorage.getItem('attempts')) || [];
     return (
-      <div className={classes.root}>
-        <div className="stopwatch">
-          <Link to={`/`}>
+      <Grid container justify='center'>
+        <Grid item xs={12} sm={12} md={5} lg={5} >
+          <Link to={`/`} style={{ textDecoration: 'none' }}>
             <Chip
-              icon={<HomeRoundedIcon />}
-              label="Home"
+              label="< Back"
               clickable
-              color="primary"
+              classes={{
+                root: classes.chip
+              }}
               variant="outlined"
             />
           </Link>
-          <section>
-            <Graphic data={attempts} />
-          </section>
-          <section>
-            {attempts.length > 0 && (
-                <WatchList attempts={attempts}/>
-            )}
-          </section>
-        </div>
-      </div>
+          <Graphic data={attempts} />
+          {attempts.length > 0 && (
+            <WatchList attempts={attempts}/>
+          )}
+        </Grid>
+      </Grid>
     );
   }
 }
 
-// History.propTypes = {
-
-// };
+History.propTypes = {
+  classes: PropTypes.shape({
+    chip: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 
 export default withStyles(styles)(History);

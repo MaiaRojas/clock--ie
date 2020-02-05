@@ -1,5 +1,4 @@
 import './style/main.css';
-import './img/clock.jpg';
 
 
 import React from 'react';

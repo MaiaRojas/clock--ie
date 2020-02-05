@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import moment from 'moment';
 import CanvasJSReact from '../assets/canvasjs.react';
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -7,7 +6,6 @@ class SplineChart extends Component {
 	render() {
 		const { data } = this.props;
 		const dataPointsx = data.map(({ time, date }) => ({ x: new Date(date), y: time }))
-		console.log(dataPointsx)
 
 		const options = {
 			animationEnabled: true,
@@ -16,7 +14,6 @@ class SplineChart extends Component {
 			},
 			axisX: {
 				title: "Date",
-				// valueFormatString: "MMM"
 			},
 			axisY: {
 				title: "Time",
@@ -31,7 +28,7 @@ class SplineChart extends Component {
 		}
 
 		return (
-		<div style={{ minWidth: 400 }}>
+		<div>
 			<h2 style={{ color: '#fff' }}>Attempts Chart</h2>
 			<CanvasJSChart options = {options}
 			/>
