@@ -52,13 +52,14 @@ const styles = (theme)=> ({
     display: 'flex',
     justifyContent: 'space-between',
     backgroundColor: '#333',
+  },
+  button: {
+    width: 80,
+    height: 80,
+    textTransform: 'none',
+    backgroundColor: '#97E7DB',
   }
 });
-
-const StopwatchControls = ({ onToggle, running}) =>
-  <Fab style={{ width: 80, height: 80, textTransform: 'none', backgroundColor: '#97E7DB' }} onClick={onToggle}>
-    {running ? 'Stop' : 'Start'}
-  </Fab>
 
 const bestTime = (attempts) => attempts.sort(sortByTime)[0].time;
 
@@ -117,7 +118,9 @@ class Clock extends React.Component {
             <div style={{ color: '#fff'}}>
               <Stopwatch time={this.state.time} format='time' />
             </div>
-            <StopwatchControls onToggle={this.toggle} running={this.state.running} />
+            <Fab className={classes.button} onClick={this.toggle}>
+              {this.state.running ? 'Stop' : 'Start'}
+            </Fab>
           </section>
 
           <section className={classes.section}>
